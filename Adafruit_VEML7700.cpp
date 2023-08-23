@@ -469,7 +469,7 @@ float Adafruit_VEML7700::autoLux_sd(void) {
   while(lux_sd > sd_limit){
     for (int i = 0; i < LUX_READING_SAMPLE_SIZE; i++)
       {
-        lux_sample[i] = autoLux(true);
+        lux_sample[i] = autoLux();
       }
   
     for (int i = 0; i < LUX_READING_SAMPLE_SIZE; i++)
