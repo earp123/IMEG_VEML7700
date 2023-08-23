@@ -102,6 +102,8 @@ float Adafruit_VEML7700::readLux(luxMethod method) {
     return computeLux(readALS(wait), true);
   case VEML_LUX_AUTO:
     return autoLux();
+  case VEML_LUX_SETTLED:
+    return autoLux_sd();
   default:
     return -1;
   }
