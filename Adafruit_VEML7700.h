@@ -121,6 +121,7 @@ private:
   float getResolution(void);
   float computeLux(uint16_t rawALS, bool corrected = false);
   float autoLux(void);
+  float autoLux_sd(void);
   void readWait(void);
   unsigned long lastRead;
 
