@@ -444,3 +444,50 @@ float Adafruit_VEML7700::autoLux(void) {
 
   return computeLux(ALS, useCorrection);
 }
+
+
+/*!
+ *  @brief Relies on autoLux() to achieve the best integration and gain settings.
+ * Reads a set of lux values until the destired standard deviation is achieved.
+ * Then returns the aveage of that set. Helps with constantly changing environments
+ * i.e. moving the sensor, objects/people moving around light sources near the sensor.
+ */
+float Adafruit_VEML7700::autoLux_sd(void) {
+  
+  const int LUX_READING_SAMPLE_SIZE = 10;//increasing will block for longer
+  const float sd_limit = 1.0;//decreasing will block for longer
+  float lux_sum;
+  float lux_avg;
+  float lux_var_sum;
+  float lux_variance;
+  float lux_sd;
+
+  float lux_sample[LUX_READING_SAMPLE_SIZE] = {};
+  
+  while(lux_sd > sd_limit){
+    for (int i = 0; i < LUX_READING_SAMPLE_SIZE; i++)
+      {
+        lux_sample[i] = autoLux(true);
+      }
+  
+    for (int i = 0; i < LUX_READING_SAMPLE_SIZE; i++)
+      {
+        lux_sum += lux_sample[i];
+      }
+  
+    lux_avg = lux_sum/LUX_READING_SAMPLE_SIZE;
+  
+    for (int i = 0; i < LUX_READING_SAMPLE_SIZE; i++)
+      {
+        lux_var_sum += pow((lux_sample[i] - lux_avg),2);
+      } 
+  
+    lux_variance = lux_var_sum / LUX_READING_SAMPLE_SIZE;
+  
+    lux_sd = sqrt(lux_var_sum);
+  }
+
+  //returns the average of the sample after we achieved a set with sd below the limit
+  return lux_avg;
+  
+}
