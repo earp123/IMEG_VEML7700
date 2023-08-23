@@ -14,3 +14,5 @@ products from Adafruit!
 Written by Kevin Townsend/Limor Fried for Adafruit Industries.  
 BSD license, check license.txt for more information
 All text above must be included in any redistribution
+
+Standard Deviation functionality written by Sam Rall
