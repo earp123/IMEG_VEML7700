@@ -57,6 +57,7 @@
 #define VEML7700_POWERSAVE_MODE3 0x02 ///< Power saving mode 3
 #define VEML7700_POWERSAVE_MODE4 0x03 ///< Power saving mode 4
 
+
 /*!
  *  @brief Used to explicitly annotate switch case fall throughs.
  *         Newer compilers will throw a warning otherwise.
@@ -73,8 +74,7 @@ typedef enum {
   VEML_LUX_CORRECTED,
   VEML_LUX_AUTO,
   VEML_LUX_NORMAL_NOWAIT,
-  VEML_LUX_CORRECTED_NOWAIT,
-  VEML_LUX_SETTLED
+  VEML_LUX_CORRECTED_NOWAIT
 } luxMethod;
 
 /*!
@@ -113,6 +113,9 @@ public:
   uint16_t readALS(bool wait = false);
   uint16_t readWhite(bool wait = false);
   float readLux(luxMethod method = VEML_LUX_NORMAL);
+  float readLux_sd(int size = 10, float sd = 1.0);
+  
+
 
 private:
   const float MAX_RES = 0.0036;
@@ -121,7 +124,7 @@ private:
   float getResolution(void);
   float computeLux(uint16_t rawALS, bool corrected = false);
   float autoLux(void);
-  float autoLux_sd(void);
+
   void readWait(void);
   unsigned long lastRead;
 
