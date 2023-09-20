@@ -11,6 +11,9 @@
 
 #include "Adafruit_VEML7700.h"
 
+#define LUX_READING_SAMPLE_SIZE 20
+#define STANDARD_DEVIATION_THRESHOLD 2.0
+
 Adafruit_VEML7700 veml = Adafruit_VEML7700();
 
 void setup() {
@@ -23,16 +26,22 @@ void setup() {
     while (1);
   }
   Serial.println("Sensor found");
+  //veml.setReadingSampleSize(20);
+  //veml.setStandardDeviation(2.0);
 }
 
 void loop() {
 
   int time = millis();
-  float lux = veml.readLux(VEML_LUX_SETTLED);
 
-  Serial.println("------------------------------------");
-  Serial.print("Lux = "); Serial.println(lux);
-  Serial.print("Read time (ms) = ");Serial.println((millis()-time));
+  //returns -1 if SD is above threshold
+  float lux = veml.readLux_sd(LUX_READING_SAMPLE_SIZE, STANDARD_DEVIATION_THRESHOLD);
+
   
+  Serial.print("Lux = ");
+  if(lux > 0) Serial.println(lux);
+  else        Serial.println("Unstable lighting!");
+  Serial.print("Read time (ms) = ");Serial.println((millis()-time));
+  Serial.println("------------------------------------");
   delay(1000);
 }
