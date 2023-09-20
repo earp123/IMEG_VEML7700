@@ -102,8 +102,6 @@ float Adafruit_VEML7700::readLux(luxMethod method) {
     return computeLux(readALS(wait), true);
   case VEML_LUX_AUTO:
     return autoLux();
-  case VEML_LUX_SETTLED:
-    return autoLux_sd();
   default:
     return -1;
   }
@@ -454,42 +452,45 @@ float Adafruit_VEML7700::autoLux(void) {
  * Then returns the aveage of that set. Helps with constantly changing environments
  * i.e. moving the sensor, objects/people moving around light sources near the sensor.
  */
-float Adafruit_VEML7700::autoLux_sd(void) {
-  
-  const int LUX_READING_SAMPLE_SIZE = 10;//increasing will block for longer
-  const float sd_limit = 1.0;//decreasing will block for longer
-  float lux_sum;
+ 
+float Adafruit_VEML7700::readLux_sd(int size, float sd) {
+
+  const int SAMPLE_SIZE = size; //increasing will block for longer
+
+  const float sd_limit = sd;//decreasing will block for longer
+
+  float lux_sum = 0;
   float lux_avg;
-  float lux_var_sum;
+  float lux_var_sum = 0;
   float lux_variance;
   float lux_sd;
 
-  float lux_sample[LUX_READING_SAMPLE_SIZE] = {};
-  
-  while(lux_sd > sd_limit){
-    for (int i = 0; i < LUX_READING_SAMPLE_SIZE; i++)
-      {
-        lux_sample[i] = autoLux();
-      }
-  
-    for (int i = 0; i < LUX_READING_SAMPLE_SIZE; i++)
-      {
-        lux_sum += lux_sample[i];
-      }
-  
-    lux_avg = lux_sum/LUX_READING_SAMPLE_SIZE;
-  
-    for (int i = 0; i < LUX_READING_SAMPLE_SIZE; i++)
-      {
-        lux_var_sum += pow((lux_sample[i] - lux_avg),2);
-      } 
-  
-    lux_variance = lux_var_sum / LUX_READING_SAMPLE_SIZE;
-  
-    lux_sd = sqrt(lux_var_sum);
-  }
+  float lux_sample[SAMPLE_SIZE] = {};
 
+	  
+	for (int i = 0; i < SAMPLE_SIZE; i++)
+	  {
+		lux_sample[i] = autoLux();
+		
+	  }
+
+	for (int i = 0; i < SAMPLE_SIZE; i++)
+	  {
+		lux_sum += lux_sample[i];
+	  }
+
+	lux_avg = lux_sum/SAMPLE_SIZE;
+
+	for (int i = 0; i < SAMPLE_SIZE; i++)
+	  {
+		lux_var_sum += pow(abs(lux_sample[i] - lux_avg),2);
+	  } 
+
+	lux_variance = lux_var_sum / SAMPLE_SIZE;
+	lux_sd = sqrt(lux_variance);
+	
   //returns the average of the sample after we achieved a set with sd below the limit
-  return lux_avg;
+  if (lux_sd < sd_limit) return lux_avg;
+  else 					 return -1;
   
 }
