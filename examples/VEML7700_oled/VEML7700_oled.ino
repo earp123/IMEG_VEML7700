@@ -1,5 +1,5 @@
 #include <Adafruit_SSD1306.h>
-#include "Adafruit_VEML7700.h"
+#include "IMEG_VEML7700.h"
 
 Adafruit_VEML7700 veml = Adafruit_VEML7700();
 Adafruit_SSD1306 display = Adafruit_SSD1306(128, 32, &Wire);

@@ -8,7 +8,7 @@
  * Vishay Document Number: 84323, Fig. 24 Flow Chart
  */
 
-#include "Adafruit_VEML7700.h"
+#include "IMEG_VEML7700.h"
 
 Adafruit_VEML7700 veml = Adafruit_VEML7700();
 

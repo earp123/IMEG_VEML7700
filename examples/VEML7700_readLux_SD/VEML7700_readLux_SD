@@ -9,7 +9,7 @@
  * Vishay Document Number: 84323, Fig. 24 Flow Chart
  */
 
-#include "Adafruit_VEML7700.h"
+#include "IMEG_VEML7700.h"
 
 #define LUX_READING_SAMPLE_SIZE 20
 #define STANDARD_DEVIATION_THRESHOLD 2.0
