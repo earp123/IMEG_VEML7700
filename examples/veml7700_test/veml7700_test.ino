@@ -17,8 +17,8 @@ void setup() {
   // Can set non-default gain and integration time to
   // adjust for different lighting conditions.
   // =================
-  // veml.setGain(VEML7700_GAIN_1_8);
-  // veml.setIntegrationTime(VEML7700_IT_100MS);
+   veml.setGain(VEML7700_GAIN_1);
+   veml.setIntegrationTime(VEML7700_IT_800MS);
 
   Serial.print(F("Gain: "));
   switch (veml.getGain()) {
@@ -38,7 +38,7 @@ void setup() {
     case VEML7700_IT_800MS: Serial.println("800"); break;
   }
 
-  veml.setLowThreshold(10000);
+  veml.setLowThreshold(200);
   veml.setHighThreshold(20000);
   veml.interruptEnable(true);
 }
@@ -55,5 +55,5 @@ void loop() {
   if (irq & VEML7700_INTERRUPT_HIGH) {
     Serial.println("** High threshold");
   }
-  delay(500);
+  delay(50);
 }
