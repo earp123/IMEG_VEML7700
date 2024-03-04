@@ -17,8 +17,8 @@ void setup() {
   // Can set non-default gain and integration time to
   // adjust for different lighting conditions.
   // =================
-   veml.setGain(VEML7700_GAIN_1);
-   veml.setIntegrationTime(VEML7700_IT_800MS);
+   veml.setGain(VEML7700_GAIN_2);
+   veml.setIntegrationTime(VEML7700_IT_400MS);
 
   Serial.print(F("Gain: "));
   switch (veml.getGain()) {
