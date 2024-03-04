@@ -10,7 +10,7 @@
 
 #include "IMEG_VEML7700.h"
 
-Adafruit_VEML7700 veml = Adafruit_VEML7700();
+IMEG_VEML7700 veml = IMEG_VEML7700();
 
 void setup() {
   Serial.begin(115200);

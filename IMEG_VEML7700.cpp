@@ -7,8 +7,7 @@
  *
  * 	I2C Driver for the VEML7700 I2C Lux sensor
  *
- * 	This is a library for the Adafruit VEML7700 breakout:
- * 	http://www.adafruit.com/
+ * 	This is a library for the IMEG ALL Meter
  *
  * 	Adafruit invests time and resources providing this open source code,
  *  please support Adafruit and open-source hardware by purchasing products from
@@ -17,6 +16,7 @@
  *  @section author Author
  *
  *  Limor Fried (Adafruit Industries)
+ *  Sam Rall    (IMEG)
  *
  * 	@section license License
  *
@@ -396,16 +396,18 @@ void IMEG_VEML7700::readWait(void) {
  * Application", Vishay Document Number: 84323, Fig. 24 Flow Chart. This will
  * automatically adjust gain and integration time as needed to obtain a good raw
  * count value. Additionally, a non-linear correction is applied if needed.
+ 
+	@note IMEG ALL Meter doesn't usually measure lux ranges where gain <1 or i.t. <400ms is needed
  */
 float IMEG_VEML7700::autoLux(void) {
-  const uint8_t gains[] = {VEML7700_GAIN_1_8, VEML7700_GAIN_1_4,
-                           VEML7700_GAIN_1, VEML7700_GAIN_2};
-  const uint8_t intTimes[] = {VEML7700_IT_25MS,  VEML7700_IT_50MS,
-                              VEML7700_IT_100MS, VEML7700_IT_200MS,
-                              VEML7700_IT_400MS, VEML7700_IT_800MS};
+  const uint8_t gains[] = //{VEML7700_GAIN_1_8, VEML7700_GAIN_1_4,
+							{VEML7700_GAIN_1, VEML7700_GAIN_2};
+  const uint8_t intTimes[] = //{VEML7700_IT_25MS,  VEML7700_IT_50MS,
+                              //VEML7700_IT_100MS, VEML7700_IT_200MS,
+                              {VEML7700_IT_400MS, VEML7700_IT_800MS};
 
-  uint8_t gainIndex = 0;      // start with ALS gain = 1/8
-  uint8_t itIndex = 2;        // start with ALS integration time = 100ms
+  uint8_t gainIndex = 0;      // start with ALS gain = 1
+  uint8_t itIndex = 0;        // start with ALS integration time = 400ms
   bool useCorrection = false; // flag for non-linear correction
 
   setGain(gains[gainIndex]);
@@ -419,10 +421,10 @@ float IMEG_VEML7700::autoLux(void) {
 
     // increase first gain and then integration time as needed
     // compute lux using simple linear formula
-    while ((ALS <= 100) && !((gainIndex == 3) && (itIndex == 5))) {
-      if (gainIndex < 3) {
+    while ((ALS <= 100) && !((gainIndex == 1) && (itIndex == 1))) {
+      if (gainIndex < 1) {
         setGain(gains[++gainIndex]);
-      } else if (itIndex < 5) {
+      } else if (itIndex < 1) {
         setIntegrationTime(intTimes[++itIndex]);
       }
       ALS = readALS(true);
@@ -433,7 +435,7 @@ float IMEG_VEML7700::autoLux(void) {
 
     // decrease integration time as needed
     // compute lux using non-linear correction
-    useCorrection = true;
+    //useCorrection = true;
     while ((ALS > 10000) && (itIndex > 0)) {
       setIntegrationTime(intTimes[--itIndex]);
       ALS = readALS(true);
