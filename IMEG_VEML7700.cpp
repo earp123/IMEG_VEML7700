@@ -1,5 +1,5 @@
 /*!
- *  @file Adafruit_VEML7700.cpp
+ *  @file IMEG_VEML7700.cpp
  *
  *  @mainpage Adafruit VEML7700 I2C Lux Sensor
  *
@@ -32,14 +32,14 @@
 /*!
  *    @brief  Instantiates a new VEML7700 class
  */
-Adafruit_VEML7700::Adafruit_VEML7700(void) {}
+IMEG_VEML7700::IMEG_VEML7700(void) {}
 
 /*!
  *    @brief  Sets up the hardware for talking to the VEML7700
  *    @param  theWire An optional pointer to an I2C interface
  *    @return True if initialization was successful, otherwise false.
  */
-bool Adafruit_VEML7700::begin(TwoWire *theWire) {
+bool IMEG_VEML7700::begin(TwoWire *theWire) {
   i2c_dev = new Adafruit_I2CDevice(VEML7700_I2CADDR_DEFAULT, theWire);
 
   if (!i2c_dev->begin()) {
@@ -87,7 +87,7 @@ bool Adafruit_VEML7700::begin(TwoWire *theWire) {
  *    @param method Lux comptation method to use. One of
  *    @returns Floating point Lux data
  */
-float Adafruit_VEML7700::readLux(luxMethod method) {
+float IMEG_VEML7700::readLux(luxMethod method) {
   bool wait = true;
   switch (method) {
   case VEML_LUX_NORMAL_NOWAIT:
@@ -114,7 +114,7 @@ float Adafruit_VEML7700::readLux(luxMethod method) {
  * results.
  *    @returns 16-bit data value from the ALS register
  */
-uint16_t Adafruit_VEML7700::readALS(bool wait) {
+uint16_t IMEG_VEML7700::readALS(bool wait) {
   if (wait)
     readWait();
   lastRead = millis();
@@ -128,7 +128,7 @@ uint16_t Adafruit_VEML7700::readALS(bool wait) {
  * results.
  *    @returns 16-bit data value from the WHITE register
  */
-uint16_t Adafruit_VEML7700::readWhite(bool wait) {
+uint16_t IMEG_VEML7700::readWhite(bool wait) {
   if (wait)
     readWait();
   lastRead = millis();
@@ -139,7 +139,7 @@ uint16_t Adafruit_VEML7700::readWhite(bool wait) {
  *    @brief Enable or disable the sensor
  *    @param enable The flag to enable/disable
  */
-void Adafruit_VEML7700::enable(bool enable) {
+void IMEG_VEML7700::enable(bool enable) {
   ALS_Shutdown->write(!enable);
   // From app note:
   //   '''
@@ -156,13 +156,13 @@ void Adafruit_VEML7700::enable(bool enable) {
  *    @brief Ask if the interrupt is enabled
  *    @returns True if enabled, false otherwise
  */
-bool Adafruit_VEML7700::enabled(void) { return !ALS_Shutdown->read(); }
+bool IMEG_VEML7700::enabled(void) { return !ALS_Shutdown->read(); }
 
 /*!
  *    @brief Enable or disable the interrupt
  *    @param enable The flag to enable/disable
  */
-void Adafruit_VEML7700::interruptEnable(bool enable) {
+void IMEG_VEML7700::interruptEnable(bool enable) {
   ALS_Interrupt_Enable->write(enable);
 }
 
@@ -170,7 +170,7 @@ void Adafruit_VEML7700::interruptEnable(bool enable) {
  *    @brief Ask if the interrupt is enabled
  *    @returns True if enabled, false otherwise
  */
-bool Adafruit_VEML7700::interruptEnabled(void) {
+bool IMEG_VEML7700::interruptEnabled(void) {
   return ALS_Interrupt_Enable->read();
 }
 
@@ -179,7 +179,7 @@ bool Adafruit_VEML7700::interruptEnabled(void) {
  *    @param pers Persistance constant, can be VEML7700_PERS_1, VEML7700_PERS_2,
  *    VEML7700_PERS_4 or VEML7700_PERS_8
  */
-void Adafruit_VEML7700::setPersistence(uint8_t pers) {
+void IMEG_VEML7700::setPersistence(uint8_t pers) {
   ALS_Persistence->write(pers);
 }
 
@@ -188,7 +188,7 @@ void Adafruit_VEML7700::setPersistence(uint8_t pers) {
  *    @returns Persistance constant, can be VEML7700_PERS_1, VEML7700_PERS_2,
  *    VEML7700_PERS_4 or VEML7700_PERS_8
  */
-uint8_t Adafruit_VEML7700::getPersistence(void) {
+uint8_t IMEG_VEML7700::getPersistence(void) {
   return ALS_Persistence->read();
 }
 
@@ -200,7 +200,7 @@ uint8_t Adafruit_VEML7700::getPersistence(void) {
  * is a blocking delay. If disabled by passing false, user code must insure a
  * new reading is not done before old integration cycle completes.
  */
-void Adafruit_VEML7700::setIntegrationTime(uint8_t it, bool wait) {
+void IMEG_VEML7700::setIntegrationTime(uint8_t it, bool wait) {
   // save current integration time
   int flushDelay = wait ? getIntegrationTimeValue() : 0;
   // set new integration time
@@ -216,7 +216,7 @@ void Adafruit_VEML7700::setIntegrationTime(uint8_t it, bool wait) {
  *    @returns IT index, can be VEML7700_IT_100MS, VEML7700_IT_200MS,
  * VEML7700_IT_400MS, VEML7700_IT_800MS, VEML7700_IT_50MS or VEML7700_IT_25MS
  */
-uint8_t Adafruit_VEML7700::getIntegrationTime(void) {
+uint8_t IMEG_VEML7700::getIntegrationTime(void) {
   return ALS_Integration_Time->read();
 }
 
@@ -224,7 +224,7 @@ uint8_t Adafruit_VEML7700::getIntegrationTime(void) {
  *    @brief Get ALS integration time value
  *    @returns ALS integration time in milliseconds
  */
-int Adafruit_VEML7700::getIntegrationTimeValue(void) {
+int IMEG_VEML7700::getIntegrationTimeValue(void) {
   switch (getIntegrationTime()) {
   case VEML7700_IT_25MS:
     return 25;
@@ -248,7 +248,7 @@ int Adafruit_VEML7700::getIntegrationTimeValue(void) {
  *    @param gain Can be VEML7700_GAIN_1, VEML7700_GAIN_2, VEML7700_GAIN_1_8 or
  * VEML7700_GAIN_1_4
  */
-void Adafruit_VEML7700::setGain(uint8_t gain) {
+void IMEG_VEML7700::setGain(uint8_t gain) {
   ALS_Gain->write(gain);
   lastRead = millis(); // reset
 }
@@ -258,13 +258,13 @@ void Adafruit_VEML7700::setGain(uint8_t gain) {
  *    @returns Gain index, can be VEML7700_GAIN_1, VEML7700_GAIN_2,
  * VEML7700_GAIN_1_8 or VEML7700_GAIN_1_4
  */
-uint8_t Adafruit_VEML7700::getGain(void) { return ALS_Gain->read(); }
+uint8_t IMEG_VEML7700::getGain(void) { return ALS_Gain->read(); }
 
 /*!
  *    @brief Get ALS gain value
  *    @returns Actual gain value as float
  */
-float Adafruit_VEML7700::getGainValue(void) {
+float IMEG_VEML7700::getGainValue(void) {
   switch (getGain()) {
   case VEML7700_GAIN_1_8:
     return 0.125;
@@ -283,7 +283,7 @@ float Adafruit_VEML7700::getGainValue(void) {
  *    @brief Enable power save mode
  *    @param enable True if power save should be enabled
  */
-void Adafruit_VEML7700::powerSaveEnable(bool enable) {
+void IMEG_VEML7700::powerSaveEnable(bool enable) {
   PowerSave_Enable->write(enable);
 }
 
@@ -291,7 +291,7 @@ void Adafruit_VEML7700::powerSaveEnable(bool enable) {
  *    @brief Check if power save mode is enabled
  *    @returns True if power save is enabled
  */
-bool Adafruit_VEML7700::powerSaveEnabled(void) {
+bool IMEG_VEML7700::powerSaveEnabled(void) {
   return PowerSave_Enable->read();
 }
 
@@ -299,7 +299,7 @@ bool Adafruit_VEML7700::powerSaveEnabled(void) {
  *    @brief Assign the power save register data
  *    @param mode The 16-bit data to write to VEML7700_ALS_POWER_SAVE
  */
-void Adafruit_VEML7700::setPowerSaveMode(uint8_t mode) {
+void IMEG_VEML7700::setPowerSaveMode(uint8_t mode) {
   PowerSave_Mode->write(mode);
 }
 
@@ -307,7 +307,7 @@ void Adafruit_VEML7700::setPowerSaveMode(uint8_t mode) {
  *    @brief  Retrieve the power save register data
  *    @return 16-bit data from VEML7700_ALS_POWER_SAVE
  */
-uint8_t Adafruit_VEML7700::getPowerSaveMode(void) {
+uint8_t IMEG_VEML7700::getPowerSaveMode(void) {
   return PowerSave_Mode->read();
 }
 
@@ -315,7 +315,7 @@ uint8_t Adafruit_VEML7700::getPowerSaveMode(void) {
  *    @brief Assign the low threshold register data
  *    @param value The 16-bit data to write to VEML7700_ALS_THREHOLD_LOW
  */
-void Adafruit_VEML7700::setLowThreshold(uint16_t value) {
+void IMEG_VEML7700::setLowThreshold(uint16_t value) {
   ALS_LowThreshold->write(value);
 }
 
@@ -323,7 +323,7 @@ void Adafruit_VEML7700::setLowThreshold(uint16_t value) {
  *    @brief  Retrieve the low threshold register data
  *    @return 16-bit data from VEML7700_ALS_THREHOLD_LOW
  */
-uint16_t Adafruit_VEML7700::getLowThreshold(void) {
+uint16_t IMEG_VEML7700::getLowThreshold(void) {
   return ALS_LowThreshold->read();
 }
 
@@ -331,7 +331,7 @@ uint16_t Adafruit_VEML7700::getLowThreshold(void) {
  *    @brief Assign the high threshold register data
  *    @param value The 16-bit data to write to VEML7700_ALS_THREHOLD_HIGH
  */
-void Adafruit_VEML7700::setHighThreshold(uint16_t value) {
+void IMEG_VEML7700::setHighThreshold(uint16_t value) {
   ALS_HighThreshold->write(value);
 }
 
@@ -339,7 +339,7 @@ void Adafruit_VEML7700::setHighThreshold(uint16_t value) {
  *    @brief  Retrieve the high threshold register data
  *    @return 16-bit data from VEML7700_ALS_THREHOLD_HIGH
  */
-uint16_t Adafruit_VEML7700::getHighThreshold(void) {
+uint16_t IMEG_VEML7700::getHighThreshold(void) {
   return ALS_HighThreshold->read();
 }
 
@@ -347,7 +347,7 @@ uint16_t Adafruit_VEML7700::getHighThreshold(void) {
  *    @brief  Retrieve the interrupt status register data
  *    @return 16-bit data from VEML7700_INTERRUPTSTATUS
  */
-uint16_t Adafruit_VEML7700::interruptStatus(void) {
+uint16_t IMEG_VEML7700::interruptStatus(void) {
   return Interrupt_Status->read();
 }
 
@@ -355,7 +355,7 @@ uint16_t Adafruit_VEML7700::interruptStatus(void) {
  *    @brief Determines resolution for current gain and integration time
  * settings.
  */
-float Adafruit_VEML7700::getResolution(void) {
+float IMEG_VEML7700::getResolution(void) {
   return MAX_RES * (IT_MAX / getIntegrationTimeValue()) *
          (GAIN_MAX / getGainValue());
 }
@@ -366,7 +366,7 @@ float Adafruit_VEML7700::getResolution(void) {
  *    @param corrected if true, apply non-linear correction
  *    @return lux value
  */
-float Adafruit_VEML7700::computeLux(uint16_t rawALS, bool corrected) {
+float IMEG_VEML7700::computeLux(uint16_t rawALS, bool corrected) {
   float lux = getResolution() * rawALS;
   if (corrected)
     lux = (((6.0135e-13 * lux - 9.3924e-9) * lux + 8.1488e-5) * lux + 1.0023) *
@@ -374,7 +374,7 @@ float Adafruit_VEML7700::computeLux(uint16_t rawALS, bool corrected) {
   return lux;
 }
 
-void Adafruit_VEML7700::readWait(void) {
+void IMEG_VEML7700::readWait(void) {
   // From app note:
   //   '''
   //   Without using the power-saving feature (PSM_EN = 0), the
@@ -397,7 +397,7 @@ void Adafruit_VEML7700::readWait(void) {
  * automatically adjust gain and integration time as needed to obtain a good raw
  * count value. Additionally, a non-linear correction is applied if needed.
  */
-float Adafruit_VEML7700::autoLux(void) {
+float IMEG_VEML7700::autoLux(void) {
   const uint8_t gains[] = {VEML7700_GAIN_1_8, VEML7700_GAIN_1_4,
                            VEML7700_GAIN_1, VEML7700_GAIN_2};
   const uint8_t intTimes[] = {VEML7700_IT_25MS,  VEML7700_IT_50MS,
@@ -453,7 +453,7 @@ float Adafruit_VEML7700::autoLux(void) {
  * i.e. moving the sensor, objects/people moving around light sources near the sensor.
  */
  
-float Adafruit_VEML7700::readLux_sd(int size, float sd) {
+float IMEG_VEML7700::readLux_sd(int size, float sd) {
 
   const int SAMPLE_SIZE = size; //increasing will block for longer
 

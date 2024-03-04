@@ -1,11 +1,11 @@
 #include "IMEG_VEML7700.h"
 
-Adafruit_VEML7700 veml = Adafruit_VEML7700();
+IMEG_VEML7700 veml = IMEG_VEML7700();
 
 void setup() {
   Serial.begin(115200);
   while (!Serial) { delay(10); }
-  Serial.println("Adafruit VEML7700 Test");
+  Serial.println("IMEG VEML7700 Test");
 
   if (!veml.begin()) {
     Serial.println("Sensor not found");
@@ -17,7 +17,7 @@ void setup() {
   // Can set non-default gain and integration time to
   // adjust for different lighting conditions.
   // =================
-   veml.setGain(VEML7700_GAIN_2);
+   veml.setGain(VEML7700_GAIN_1);
    veml.setIntegrationTime(VEML7700_IT_400MS);
 
   Serial.print(F("Gain: "));

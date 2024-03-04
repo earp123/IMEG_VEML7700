@@ -1,5 +1,5 @@
 /*!
- *  @file Adafruit_VEML7700.h
+ *  @file IMEG_VEML7700.h
  *
  * 	I2C Driver for VEML7700 Lux sensor
  *
@@ -14,8 +14,8 @@
  *	BSD license (see license.txt)
  */
 
-#ifndef _ADAFRUIT_VEML7700_H
-#define _ADAFRUIT_VEML7700_H
+#ifndef _IMEG_VEML7700_H
+#define _IMEG_VEML7700_H
 
 #include "Arduino.h"
 #include <Adafruit_I2CDevice.h>
@@ -81,9 +81,9 @@ typedef enum {
  *    @brief  Class that stores state and functions for interacting with
  *            VEML7700 Light Sensor
  */
-class Adafruit_VEML7700 {
+class IMEG_VEML7700 {
 public:
-  Adafruit_VEML7700();
+  IMEG_VEML7700();
   bool begin(TwoWire *theWire = &Wire);
 
   void enable(bool enable);
@@ -118,7 +118,7 @@ public:
 
 
 private:
-  const float MAX_RES = 0.0147;  //~SWR modified to fit IMEG ALL Meter Lensing. Adafruit value (no lensing) is 0.0036.
+  const float MAX_RES = 0.0146;  //~SWR modified to fit IMEG ALL Meter Lensing. Adafruit value (no lensing) is 0.0036.
   const float GAIN_MAX = 2;
   const float IT_MAX = 800;
   float getResolution(void);
