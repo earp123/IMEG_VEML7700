@@ -400,11 +400,11 @@ void IMEG_VEML7700::readWait(void) {
 	@note IMEG ALL Meter doesn't usually measure lux ranges where gain <1 or i.t. <400ms is needed
  */
 float IMEG_VEML7700::autoLux(void) {
-  const uint8_t gains[] = //{VEML7700_GAIN_1_8, VEML7700_GAIN_1_4,
-							{VEML7700_GAIN_1, VEML7700_GAIN_2};
-  const uint8_t intTimes[] = //{VEML7700_IT_25MS,  VEML7700_IT_50MS,
-                              //VEML7700_IT_100MS, VEML7700_IT_200MS,
-                              {VEML7700_IT_400MS, VEML7700_IT_800MS};
+  const uint8_t gains[] = {VEML7700_GAIN_1_8, VEML7700_GAIN_1_4,
+							VEML7700_GAIN_1, VEML7700_GAIN_2};
+  const uint8_t intTimes[] = {VEML7700_IT_25MS,  VEML7700_IT_50MS,
+                              VEML7700_IT_100MS, VEML7700_IT_200MS,
+                              VEML7700_IT_400MS, VEML7700_IT_800MS};
 
   uint8_t gainIndex = 0;      // start with ALS gain = 1
   uint8_t itIndex = 0;        // start with ALS integration time = 400ms
