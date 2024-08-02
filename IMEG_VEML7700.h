@@ -118,7 +118,7 @@ public:
 
 
 private:
-  const float MAX_RES = 0.0146;  //~SWR modified to fit IMEG ALL Meter Lensing. Adafruit value (no lensing) is 0.0036.
+  const float MAX_RES = 0.0165;  //~SWR modified to fit IMEG ALL Meter Lensing. Adafruit value (no lensing) is 0.0036.
   const float GAIN_MAX = 2;
   const float IT_MAX = 800;
   float getResolution(void);

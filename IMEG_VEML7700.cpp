@@ -406,29 +406,30 @@ float IMEG_VEML7700::autoLux(void) {
                               VEML7700_IT_100MS, VEML7700_IT_200MS,
                               VEML7700_IT_400MS, VEML7700_IT_800MS};
 
-  uint8_t gainIndex = 0;      // start with ALS gain = 1
+  uint8_t gainIndex = 3;      // start with ALS gain = 1
   uint8_t itIndex = 0;        // start with ALS integration time = 400ms
   bool useCorrection = false; // flag for non-linear correction
-
+  uint16_t ALS_min = 100;
+  uint16_t ALS_max = 16000;
   setGain(gains[gainIndex]);
   setIntegrationTime(intTimes[itIndex]);
 
   uint16_t ALS = readALS(true);
-  // Serial.println("** AUTO LUX DEBUG **");
-  // Serial.print("ALS initial = "); Serial.println(ALS);
+  Serial.println("** AUTO LUX DEBUG **");
+  Serial.print("ALS initial = "); Serial.println(ALS);
 
-  if (ALS <= 100) {
+  if (ALS <= ALS_min) {//Adafruit value was 100
 
     // increase first gain and then integration time as needed
     // compute lux using simple linear formula
-    while ((ALS <= 100) && !((gainIndex == 1) && (itIndex == 1))) {
-      if (gainIndex < 1) {
+    while ((ALS <= ALS_min) && !((gainIndex == 3) && (itIndex == 5))) {
+      if (gainIndex < 3) {
         setGain(gains[++gainIndex]);
-      } else if (itIndex < 1) {
+      } else if (itIndex < 5) {
         setIntegrationTime(intTimes[++itIndex]);
       }
       ALS = readALS(true);
-      // Serial.print("ALS low lux = "); Serial.println(ALS);
+      Serial.print("ALS low lux = "); Serial.println(ALS);
     }
 
   } else {
@@ -436,13 +437,13 @@ float IMEG_VEML7700::autoLux(void) {
     // decrease integration time as needed
     // compute lux using non-linear correction
     //useCorrection = true;
-    while ((ALS > 10000) && (itIndex > 0)) {
+    while ((ALS > ALS_max) && (itIndex > 0)) {
       setIntegrationTime(intTimes[--itIndex]);
       ALS = readALS(true);
-      // Serial.print("ALS  hi lux = "); Serial.println(ALS);
+      Serial.print("ALS  hi lux = "); Serial.println(ALS);
     }
   }
-  // Serial.println("** AUTO LUX DEBUG **");
+  Serial.println("** COMPUTED **");
 
   return computeLux(ALS, useCorrection);
 }

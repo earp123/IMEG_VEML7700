@@ -28,10 +28,10 @@ void loop() {
   // to read lux using automatic method, specify VEML_LUX_AUTO
   
   float lux = veml.readLux(VEML_LUX_AUTO);
-  int als = veml.readALS(true);
+  //int als = veml.readALS(true);
   
   Serial.println("------------------------------------");
-  Serial.print("ALS = "); Serial.println(als);
+ // Serial.print("ALS = "); Serial.println(als);
   Serial.print("Lux = "); Serial.println(lux);
   Serial.println("Settings used for reading:");
   Serial.print(F("Gain: "));
@@ -51,5 +51,5 @@ void loop() {
     case VEML7700_IT_800MS: Serial.println("800"); break;
   }
 
-  delay(1000);
+  delay(10000);
 }
