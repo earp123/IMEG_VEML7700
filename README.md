@@ -9,7 +9,8 @@ Tested and works great with the [Adafruit VEML7700 Breakout Board](http://www.ad
 
 This chip uses I2C to communicate, 2 pins are required to interface
 
-Written by Kevin Townsend/Limor Fried for Adafruit Industries.  
+Standard Deviation Algorithm written by Sam Rall.
+Base driver written by Kevin Townsend/Limor Fried for Adafruit Industries.  
 BSD license, check license.txt for more information
 All text above must be included in any redistribution
 
